@@ -1,0 +1,12 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'root_module'
+
+include 'core-api'
+include 'order-service'
+include 'payment-service'
+include 'shipping-service'

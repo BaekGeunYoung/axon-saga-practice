@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: shipping-service
+server:
+  port: 8082
