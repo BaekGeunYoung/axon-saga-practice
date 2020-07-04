@@ -8,9 +8,9 @@ spring boot와 axon framework 환경에서 SAGA pattern을 활용해 분산 트�
 
 ## SAGA pattern
 
-그러한 분산 환경에서의 트랜잭션을 구현하는 방법으로 SAGA Pattern이라는 것이 있다. SAGA pattern이란 마이크로서비스들끼리 이벤트를 주고받아 특정 마이크로서비스에서의 작업이 실패하면 이전까지 작업이 완료된 마이크로서비스들에게 보상 (complementary) 이베트를 소싱함으로써 분산 환경에서 atomicity를 보장하는 패턴이다. SATA pattern에서의 핵심은 마이크로서비스들끼리 이벤트를 주고 받는다는 것이기 때문에, 이 패턴은 기본적으로 event sourcing 패턴 위에 적용되는 패턴이다. event sourcing 및 CQRS 패턴에 대한 실습 코드는 [여기](https://github.com/BaekGeunYoung/cqrs-eventsourcing-practice) 를 참조하면 된다.
+그러한 분산 환경에서의 트랜잭션을 구현하는 방법으로 SAGA Pattern이라는 것이 있다. SAGA pattern이란 마이크로서비스들끼리 이벤트를 주고받아 특정 마이크로서비스에서의 작업이 실패하면 이전까지 작업이 완료된 마이크로서비스들에게 보상 (complementary) 이베트를 소싱함으로써 분산 환경에서 atomicity를 보장하는 패턴이다. SAGA pattern에서의 핵심은 마이크로서비스들끼리 이벤트를 주고 받는다는 것이기 때문에, 이 패턴은 기본적으로 event sourcing 패턴 위에 적용되는 패턴이다. event sourcing 및 CQRS 패턴에 대한 실습 코드는 [여기](https://github.com/BaekGeunYoung/cqrs-eventsourcing-practice) 를 참조하면 된다.
 
-SATA pattern은 구체적으로 두 가지 종류가 있는데, 하나는 Choreography based SATA pattern이고, 다른 하나는 Orchestration based SATA pattern이다.
+SAGA pattern은 구체적으로 두 가지 종류가 있는데, 하나는 Choreography based SAGA pattern이고, 다른 하나는 Orchestration based SAGA pattern이다.
 
 ### Choreography Based SAGA
 
@@ -43,7 +43,7 @@ SATA pattern은 구체적으로 두 가지 종류가 있는데, 하나는 Choreo
 - 모든 트랜잭션을 Orchestrator가 관리하기 때문에 로직이 복잡해 질 수 있다.
 - Orchestrator라는 추가 서비스가 들어가고 이를 관리해애하여 인프라의 복잡성이 증가된다.
 
-본 실습에서는 orchestration based SATA pattern을 이용해 분산 트랜잭션을 구현해보려고 한다.
+본 실습에서는 orchestration based SAGA pattern을 이용해 분산 트랜잭션을 구현해보려고 한다.
 
 ## package structure
 
@@ -55,7 +55,7 @@ SATA pattern은 구체적으로 두 가지 종류가 있는데, 하나는 Choreo
 └── shipping-service
 ```
 
-SATA pattern을 구현하기 위해서는 여러 마이크로서비스가 동일한 event 및 command 객체를 사용해야 하기 때문에 multi project 방식으로 프로젝트를 만들었고, 공통으로 사용하는 event와 command 객체는 core-api 모듈에 위치시켰다. 실제로 MSA를 프로덕션 환경에서 서비스하기 위해서는 각 마이크로서비스 간에 물리적인 종속성이 없어야 하기 때문에 core-api와 같은 모듈은 라이브러리화하거나 git submodule로 관리하는게 좋을 것이다.
+SAGA pattern을 구현하기 위해서는 여러 마이크로서비스가 동일한 event 및 command 객체를 사용해야 하기 때문에 multi project 방식으로 프로젝트를 만들었고, 공통으로 사용하는 event와 command 객체는 core-api 모듈에 위치시켰다. 실제로 MSA를 프로덕션 환경에서 서비스하기 위해서는 각 마이크로서비스 간에 물리적인 종속성이 없어야 하기 때문에 core-api와 같은 모듈은 라이브러리화하거나 git submodule로 관리하는게 좋을 것이다.
 
 ## distributed transaction flow
 
